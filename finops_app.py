@@ -123,7 +123,10 @@ if model:
                 # 1. Executa Machine Learning local
                 recursos = np.array([[idade, valor, negativas, rede_binaria]])
                 probabilidade_irregular = model.predict_proba(recursos) * 100
-                risco_escalar = float(probabilidade_irregular[:, 1]) if probabilidade_irregular.ndim > 1 else float(probabilidade_irregular)
+                #risco_escalar = float(probabilidade_irregular[:, 1]) if probabilidade_irregular.ndim > 1 else float(probabilidade_irregular)
+                # Acessa explicitamente o elemento [0, 1] se houver mais de uma dimensão
+                risco_escalar = float(probabilidade_irregular[0, 1]) if probabilidade_irregular.ndim > 1 else float(probabilidade_irregular[0])
+
                 
                 # 2. RAG DINÂMICO: Extrai texto do PDF e busca trecho do exame selecionado
                 with st.spinner("Extraindo e indexando texto do arquivo PDF..."):
